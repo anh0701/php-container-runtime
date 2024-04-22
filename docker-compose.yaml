@@ -1,16 +1,22 @@
 services:  
-  caddy:
-    image: caddy:2.7.6-alpine
-    ports:
-      - "80:80"
-      - "443:443"
+  nginx:
+      build:
+        context: .
+        dockerfile: nginx/Dockerfile
+      ports:
+        - "8080:80"
+      networks:
+        - internal
+      volumes:
+        - ./example-app/public/:/var/www/html/
+        - ./logs/nginx:/var/log/nginx/
+  php:
+    image: php:fpm-alpine
+    networks:
+      - internal
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./site:/etc/caddy/site
-      - caddy_data:/data
-      - caddy_config:/config
-      - ./example-app:/var/www/example.app
-
-volumes:
-  caddy_data:
-  caddy_config:
+      - ./example-app/public/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
+networks:
+  internal:
+    driver: bridge
