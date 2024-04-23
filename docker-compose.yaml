@@ -1,5 +1,6 @@
 services:  
   nginx:
+      # image: nginx:alpine
       build:
         context: .
         dockerfile: nginx/Dockerfile
