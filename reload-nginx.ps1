@@ -1,0 +1,1 @@
+podman exec php-space nginx -s reload
