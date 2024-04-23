@@ -1,23 +1,24 @@
 services:  
   nginx:
-      # image: nginx:alpine
-      build:
-        context: .
-        dockerfile: nginx/Dockerfile
-      ports:
-        - "8080:80"
-      networks:
-        - internal
-      volumes:
-        - ./example-app/:/var/www/html/
-        - ./logs/nginx:/var/log/nginx/
+    container_name: php-space
+    image: docker.io/nginx:alpine
+    ports:
+      - "8080:80"
+    networks:
+      - internal
+    volumes:
+      - ./example-app/:/var/www/html/:z
+      - ./logs/nginx:/var/log/nginx
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - php
   php:
     image: php:fpm-alpine
     networks:
       - internal
     volumes:
       - ./example-app/:/var/www/html/
-      - ./logs/php.log:/var/log/fpm-php.www.log
+      - ./logs/php-fpm/php-fpm.log:/var/log/fpm-php.www.log
 networks:
   internal:
     driver: bridge
