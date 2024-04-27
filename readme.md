@@ -16,6 +16,6 @@
 
 3. about repository
 
-- logs: have file log nginx and php
-- example-app: have code php
-- img-tag.sh: check image tag 
+- /logs/{php,nginx}: php, nginx log files
+- /example-app: an example app.
+- /img-tag.sh: docker OCI tag query 
