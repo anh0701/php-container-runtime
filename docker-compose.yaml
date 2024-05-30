@@ -12,6 +12,7 @@ services:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - php
+  
   php:
     image: php:fpm-alpine
     networks:
@@ -19,6 +20,24 @@ services:
     volumes:
       - ./example-app/:/var/www/html/
       - ./logs/php-fpm/php-fpm.log:/var/log/fpm-php.www.log
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.2.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    ports:
+      - 3306:3306
+    networks:
+      - internal
+    volumes:
+      - example-app-vol:/var/lib/mysql
+
 networks:
   internal:
     driver: bridge
+
+volumes:
+  example-app-vol:
+    external: true
